@@ -57,7 +57,12 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+      <div className="w-full max-w-md space-y-6">
+        <div className="bg-primary text-primary-foreground rounded-lg p-4 text-center">
+          <h2 className="text-lg font-semibold">Welcome to Smart Pantry!</h2>
+          <p className="text-sm mt-1 opacity-90">Your intelligent household pantry management solution</p>
+        </div>
+        <Card className="w-full">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Smart Pantry</CardTitle>
           <CardDescription>
@@ -176,6 +181,7 @@ const Auth = () => {
           </Tabs>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 };
