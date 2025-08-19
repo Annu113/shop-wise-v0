@@ -63,12 +63,6 @@ const Auth = () => {
           <p className="text-sm mt-1 opacity-90">Your intelligent household pantry management solution</p>
         </div>
         <Card className="w-full">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Smart Pantry</CardTitle>
-          <CardDescription>
-            Manage your pantry individually or with your household
-          </CardDescription>
-        </CardHeader>
         <CardContent>
           <Tabs defaultValue="signin" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
