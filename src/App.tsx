@@ -7,7 +7,7 @@ import { Navigation } from "@/components/Navigation";
 import { BottomNavigation } from "@/components/BottomNavigation";
 import { FloatingQuickAdd } from "@/components/FloatingQuickAdd";
 import { PantryProvider } from "@/contexts/PantryContext";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { PersonaProvider } from "@/contexts/PersonaContext";
 import { NotificationsProvider } from "@/contexts/NotificationsContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -22,11 +22,6 @@ import AcceptInvitation from "./pages/AcceptInvitation";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
-
-const AuthenticatedBottomNav = () => {
-  const { user } = useAuth();
-  return user ? <BottomNavigation /> : null;
-};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -78,7 +73,7 @@ const App = () => (
                 </Routes>
                 <FloatingQuickAdd />
               </div>
-              <AuthenticatedBottomNav />
+              <BottomNavigation />
             </BrowserRouter>
             </PantryProvider>
           </NotificationsProvider>
