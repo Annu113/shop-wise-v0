@@ -100,7 +100,7 @@ const Auth = () => {
                 </div>
                 <Button 
                   type="submit" 
-                  className="w-full" 
+                  className="w-full mt-6" 
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
@@ -158,7 +158,7 @@ const Auth = () => {
                 </div>
                 <Button 
                   type="submit" 
-                  className="w-full"
+                  className="w-full mt-6"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
