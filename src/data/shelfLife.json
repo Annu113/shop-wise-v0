@@ -1,0 +1,46 @@
+{
+  "Dairy": {
+    "Whole Milk 2%": 7,
+    "Greek Yogurt": 14,
+    "Cheddar Cheese": 28,
+    "Butter": 30,
+    "Cream Cheese": 14,
+    "Cottage Cheese": 10
+  },
+  "Produce": {
+    "Organic Bananas": 7,
+    "Fresh Spinach": 5,
+    "Apples": 21,
+    "Carrots": 21,
+    "Lettuce": 7,
+    "Tomatoes": 7,
+    "Potatoes": 14,
+    "Onions": 30
+  },
+  "Bakery": {
+    "Whole Wheat Bread": 5,
+    "White Bread": 5,
+    "Bagels": 7,
+    "Croissants": 3
+  },
+  "Meat": {
+    "Ground Beef": 2,
+    "Chicken Breast": 3,
+    "Salmon": 2,
+    "Pork Chops": 3,
+    "Turkey": 3
+  },
+  "Pantry": {
+    "Rice": 730,
+    "Pasta": 730,
+    "Canned Tomatoes": 730,
+    "Olive Oil": 730,
+    "Flour": 365,
+    "Sugar": 730
+  },
+  "Frozen": {
+    "Frozen Vegetables": 365,
+    "Ice Cream": 90,
+    "Frozen Pizza": 365
+  }
+}

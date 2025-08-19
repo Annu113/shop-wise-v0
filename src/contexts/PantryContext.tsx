@@ -1,17 +1,32 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Milk, Apple, Cookie, Package } from "lucide-react";
+import { format, addDays } from "date-fns";
+import shelfLifeData from '@/data/shelfLife.json';
 
 export interface PantryItem {
   id: string;
   name: string;
   category: string;
   quantity: number;
-  expiryDate: string;
+  expiryDate: string; // Always required in final state
   purchasedDate: string;
+  shelfLifeDays?: number; // Optional custom shelf life
   status: 'fresh' | 'expiring' | 'expired' | 'consumed';
   daysLeft: number;
+  totalShelfLife: number; // Total shelf life in days
   icon: React.ReactNode;
 }
+
+// Input type for adding items
+type AddItemInput = {
+  name: string;
+  category: string;
+  quantity: number;
+  purchasedDate: string;
+  expiryDate?: string; // Optional - will be calculated from shelf life if not provided
+  shelfLifeDays?: number; // Optional custom shelf life
+  icon: React.ReactNode;
+};
 
 interface PantryContextType {
   items: PantryItem[];
@@ -19,84 +34,90 @@ interface PantryContextType {
   updateStatus: (id: string, newStatus: 'fresh' | 'expiring' | 'expired' | 'consumed') => void;
   updateItem: (id: string, updates: Partial<PantryItem>) => void;
   removeItem: (id: string) => void;
-  addItem: (item: Omit<PantryItem, 'id'>) => void;
+  addItem: (item: AddItemInput) => void;
   addToCart: (item: PantryItem) => void;
   getExpiringItems: () => PantryItem[];
 }
 
 const PantryContext = createContext<PantryContextType | undefined>(undefined);
 
-const initialItems: PantryItem[] = [
+const initialItems: AddItemInput[] = [
   {
-    id: '1',
     name: 'Whole Milk 2%',
     category: 'Dairy',
     quantity: 2,
-    expiryDate: '2025-01-31',
     purchasedDate: '2025-01-25',
-    status: 'expiring',
-    daysLeft: 2,
+    // No expiryDate - will be calculated from shelf life
     icon: <Milk className="w-4 h-4" />
   },
   {
-    id: '2',
     name: 'Organic Bananas',
     category: 'Produce',
     quantity: 6,
-    expiryDate: '2025-02-05',
     purchasedDate: '2025-01-28',
-    status: 'fresh',
-    daysLeft: 7,
+    // No expiryDate - will be calculated from shelf life
     icon: <Apple className="w-4 h-4" />
   },
   {
-    id: '3',
     name: 'Whole Wheat Bread',
     category: 'Bakery',
     quantity: 1,
-    expiryDate: '2025-01-29',
     purchasedDate: '2025-01-26',
-    status: 'expired',
-    daysLeft: -1,
+    // No expiryDate - will be calculated from shelf life
     icon: <Cookie className="w-4 h-4" />
   },
   {
-    id: '4',
     name: 'Greek Yogurt',
     category: 'Dairy',
     quantity: 4,
-    expiryDate: '2025-02-10',
+    expiryDate: '2025-02-10', // Has explicit expiry date
     purchasedDate: '2025-01-27',
-    status: 'fresh',
-    daysLeft: 12,
     icon: <Package className="w-4 h-4" />
   },
   {
-    id: '5',
     name: 'Fresh Spinach',
     category: 'Produce',
     quantity: 1,
-    expiryDate: '2025-02-03',
     purchasedDate: '2025-01-29',
-    status: 'expiring',
-    daysLeft: 5,
+    // No expiryDate - will be calculated from shelf life
     icon: <Apple className="w-4 h-4" />
   },
   {
-    id: '6',
     name: 'Cheddar Cheese',
     category: 'Dairy',
     quantity: 1,
-    expiryDate: '2025-02-04',
     purchasedDate: '2025-01-28',
-    status: 'expiring',
-    daysLeft: 6,
+    shelfLifeDays: 21, // Custom shelf life override
     icon: <Package className="w-4 h-4" />
   }
 ];
 
-// Constants
-const EXPIRING_DAYS = 7;
+// Helper function to get default shelf life for an item
+const getDefaultShelfLife = (itemName: string, category: string): number => {
+  const categoryData = shelfLifeData[category as keyof typeof shelfLifeData];
+  if (categoryData && categoryData[itemName as keyof typeof categoryData]) {
+    return categoryData[itemName as keyof typeof categoryData] as number;
+  }
+  
+  // Default shelf life by category if specific item not found
+  const categoryDefaults: { [key: string]: number } = {
+    'Dairy': 7,
+    'Produce': 7,
+    'Bakery': 5,
+    'Meat': 3,
+    'Pantry': 365,
+    'Frozen': 90
+  };
+  
+  return categoryDefaults[category] || 7;
+};
+
+// Helper function to calculate expiry date from purchase date and shelf life
+const calculateExpiryDate = (purchasedDate: string, shelfLifeDays: number): string => {
+  const purchaseDate = new Date(purchasedDate);
+  const expiryDate = addDays(purchaseDate, shelfLifeDays);
+  return format(expiryDate, 'yyyy-MM-dd');
+};
 
 // Helper function to calculate days left
 const calculateDaysLeft = (expiryDate: string): number => {
@@ -106,21 +127,36 @@ const calculateDaysLeft = (expiryDate: string): number => {
   return Math.floor(diffTime / (1000 * 60 * 60 * 24));
 };
 
-// Helper function to determine status based on quantity and days left
-const determineStatus = (quantity: number, daysLeft: number): 'fresh' | 'expiring' | 'expired' | 'consumed' => {
+// Helper function to determine status based on quantity, days left, and total shelf life
+const determineStatus = (quantity: number, daysLeft: number, totalShelfLife: number): 'fresh' | 'expiring' | 'expired' | 'consumed' => {
   if (quantity === 0) return 'consumed';
   if (daysLeft < 0) return 'expired';
-  if (daysLeft <= EXPIRING_DAYS) return 'expiring';
+  
+  // Calculate 40% of shelf life remaining as expiring threshold
+  const expiringThreshold = Math.ceil(totalShelfLife * 0.4);
+  if (daysLeft <= expiringThreshold) return 'expiring';
+  
   return 'fresh';
 };
 
 export const PantryProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Update initial items with calculated days left and status
-  const itemsWithCalculatedStatus = initialItems.map(item => {
-    const daysLeft = calculateDaysLeft(item.expiryDate);
-    const status = determineStatus(item.quantity, daysLeft);
+  // Process initial items with shelf life logic
+  const itemsWithCalculatedStatus = initialItems.map((item, index) => {
+    // Determine shelf life: custom > item-specific > category default
+    const totalShelfLife = item.shelfLifeDays || getDefaultShelfLife(item.name, item.category);
+    
+    // Calculate expiry date if not provided
+    const expiryDate = item.expiryDate || calculateExpiryDate(item.purchasedDate, totalShelfLife);
+    
+    // Calculate days left and status
+    const daysLeft = calculateDaysLeft(expiryDate);
+    const status = determineStatus(item.quantity, daysLeft, totalShelfLife);
+    
     return {
       ...item,
+      id: (index + 1).toString(),
+      expiryDate,
+      totalShelfLife,
       daysLeft,
       status
     };
@@ -134,7 +170,7 @@ export const PantryProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       setItems(currentItems => 
         currentItems.map(item => {
           const daysLeft = calculateDaysLeft(item.expiryDate);
-          const status = determineStatus(item.quantity, daysLeft);
+          const status = determineStatus(item.quantity, daysLeft, item.totalShelfLife);
           return {
             ...item,
             daysLeft,
@@ -174,7 +210,7 @@ export const PantryProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setItems(items.map(item => {
       if (item.id === id) {
         const newQuantity = Math.max(0, item.quantity + change);
-        const status = determineStatus(newQuantity, item.daysLeft);
+        const status = determineStatus(newQuantity, item.daysLeft, item.totalShelfLife);
         return { ...item, quantity: newQuantity, status };
       }
       return item;
@@ -205,24 +241,48 @@ export const PantryProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setItems(items.map(item => {
       if (item.id === id) {
         const updatedItem = { ...item, ...updates };
-        // Recalculate days left and status if expiry date or quantity was updated
-        if (updates.expiryDate) {
-          updatedItem.daysLeft = calculateDaysLeft(updates.expiryDate);
+        
+        // Recalculate total shelf life if needed
+        if (updates.shelfLifeDays || updates.name || updates.category) {
+          updatedItem.totalShelfLife = updates.shelfLifeDays || 
+            getDefaultShelfLife(updatedItem.name, updatedItem.category);
         }
+        
+        // Recalculate expiry date if purchase date or shelf life changed
+        if (updates.purchasedDate || updates.shelfLifeDays) {
+          updatedItem.expiryDate = updates.expiryDate || 
+            calculateExpiryDate(updatedItem.purchasedDate, updatedItem.totalShelfLife);
+        }
+        
+        // Recalculate days left and status if expiry date or quantity was updated
+        if (updates.expiryDate || updates.purchasedDate || updates.shelfLifeDays) {
+          updatedItem.daysLeft = calculateDaysLeft(updatedItem.expiryDate);
+        }
+        
         const finalQuantity = updates.quantity !== undefined ? updates.quantity : updatedItem.quantity;
-        updatedItem.status = determineStatus(finalQuantity, updatedItem.daysLeft);
+        updatedItem.status = determineStatus(finalQuantity, updatedItem.daysLeft, updatedItem.totalShelfLife);
         return updatedItem;
       }
       return item;
     }));
   };
 
-  const addItem = (item: Omit<PantryItem, 'id'>) => {
-    const daysLeft = calculateDaysLeft(item.expiryDate);
-    const status = determineStatus(item.quantity, daysLeft);
+  const addItem = (item: AddItemInput) => {
+    // Determine shelf life: custom > item-specific > category default
+    const totalShelfLife = item.shelfLifeDays || getDefaultShelfLife(item.name, item.category);
+    
+    // Calculate expiry date if not provided
+    const expiryDate = item.expiryDate || calculateExpiryDate(item.purchasedDate, totalShelfLife);
+    
+    // Calculate days left and status
+    const daysLeft = calculateDaysLeft(expiryDate);
+    const status = determineStatus(item.quantity, daysLeft, totalShelfLife);
+    
     const newItem: PantryItem = {
       ...item,
       id: Date.now().toString(),
+      expiryDate,
+      totalShelfLife,
       daysLeft,
       status,
     };
@@ -239,7 +299,11 @@ export const PantryProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   };
 
   const getExpiringItems = () => {
-    return items.filter(item => item.daysLeft <= 7 && item.daysLeft >= 0 && item.status !== 'consumed');
+    return items.filter(item => {
+      if (item.status === 'consumed' || item.daysLeft < 0) return false;
+      const expiringThreshold = Math.ceil(item.totalShelfLife * 0.4);
+      return item.daysLeft <= expiringThreshold;
+    });
   };
 
   return (

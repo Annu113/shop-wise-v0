@@ -26,25 +26,14 @@ export const ManualAddForm = ({ onClose }: ManualAddFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !category || !expiryDate) return;
-
-    const today = new Date();
-    const expiry = new Date(expiryDate);
-    const timeDiff = expiry.getTime() - today.getTime();
-    const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-    let status: 'fresh' | 'expiring' | 'expired' | 'consumed' = 'fresh';
-    if (daysLeft < 0) status = 'expired';
-    else if (daysLeft <= 7) status = 'expiring';
+    if (!name || !category) return;
 
     addItem({
       name,
       category,
       quantity,
-      expiryDate: format(expiryDate, 'yyyy-MM-dd'),
+      expiryDate: expiryDate ? format(expiryDate, 'yyyy-MM-dd') : undefined,
       purchasedDate: format(purchasedDate, 'yyyy-MM-dd'),
-      status,
-      daysLeft,
       icon: <Package className="w-4 h-4" />
     });
 
@@ -120,7 +109,10 @@ export const ManualAddForm = ({ onClose }: ManualAddFormProps) => {
       </div>
 
       <div className="space-y-2">
-        <Label>Expiry Date</Label>
+        <Label>Expiry Date (Optional)</Label>
+        <p className="text-xs text-muted-foreground mb-2">
+          Leave blank to auto-calculate from shelf life
+        </p>
         <Popover>
           <PopoverTrigger asChild>
             <Button
