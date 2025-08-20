@@ -7,229 +7,14 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.12 (cd3cf9e)"
+    PostgrestVersion: "13.0.4"
   }
   public: {
     Tables: {
-      household_invitations: {
-        Row: {
-          created_at: string
-          expires_at: string
-          household_id: string
-          id: string
-          invited_by: string
-          invited_email: string
-          status: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          expires_at?: string
-          household_id: string
-          id?: string
-          invited_by: string
-          invited_email: string
-          status?: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          expires_at?: string
-          household_id?: string
-          id?: string
-          invited_by?: string
-          invited_email?: string
-          status?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "household_invitations_household_id_fkey"
-            columns: ["household_id"]
-            isOneToOne: false
-            referencedRelation: "households"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      household_members: {
-        Row: {
-          household_id: string
-          id: string
-          joined_at: string
-          role: string
-          user_id: string
-        }
-        Insert: {
-          household_id: string
-          id?: string
-          joined_at?: string
-          role?: string
-          user_id: string
-        }
-        Update: {
-          household_id?: string
-          id?: string
-          joined_at?: string
-          role?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "household_members_household_id_fkey"
-            columns: ["household_id"]
-            isOneToOne: false
-            referencedRelation: "households"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      households: {
-        Row: {
-          created_at: string
-          id: string
-          name: string
-          owner_id: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          name: string
-          owner_id: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          name?: string
-          owner_id?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      notifications: {
-        Row: {
-          action_url: string | null
-          created_at: string
-          id: string
-          is_read: boolean
-          message: string
-          title: string
-          type: string
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          action_url?: string | null
-          created_at?: string
-          id?: string
-          is_read?: boolean
-          message: string
-          title: string
-          type: string
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          action_url?: string | null
-          created_at?: string
-          id?: string
-          is_read?: boolean
-          message?: string
-          title?: string
-          type?: string
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
-      pantry_items: {
-        Row: {
-          category: string | null
-          created_at: string
-          expiry_date: string | null
-          household_id: string | null
-          id: string
-          name: string
-          notes: string | null
-          quantity: number
-          unit: string | null
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          category?: string | null
-          created_at?: string
-          expiry_date?: string | null
-          household_id?: string | null
-          id?: string
-          name: string
-          notes?: string | null
-          quantity?: number
-          unit?: string | null
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          category?: string | null
-          created_at?: string
-          expiry_date?: string | null
-          household_id?: string | null
-          id?: string
-          name?: string
-          notes?: string | null
-          quantity?: number
-          unit?: string | null
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "pantry_items_household_id_fkey"
-            columns: ["household_id"]
-            isOneToOne: false
-            referencedRelation: "households"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      profiles: {
-        Row: {
-          created_at: string
-          current_household_id: string | null
-          display_name: string | null
-          email: string
-          id: string
-          persona_mode: Database["public"]["Enums"]["persona_mode"]
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          current_household_id?: string | null
-          display_name?: string | null
-          email: string
-          id?: string
-          persona_mode?: Database["public"]["Enums"]["persona_mode"]
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          current_household_id?: string | null
-          display_name?: string | null
-          email?: string
-          id?: string
-          persona_mode?: Database["public"]["Enums"]["persona_mode"]
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
@@ -238,7 +23,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      persona_mode: "individual" | "household"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -365,8 +150,6 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {
-      persona_mode: ["individual", "household"],
-    },
+    Enums: {},
   },
 } as const
