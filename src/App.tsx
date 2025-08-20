@@ -13,6 +13,7 @@ import { NotificationsProvider } from "@/contexts/NotificationsContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import AuthConfirm from "./pages/AuthConfirm";
 import ManagePersona from "./pages/ManagePersona";
 import Pantry from "./pages/Pantry";
 import ShoppingList from "./pages/ShoppingList";
@@ -42,6 +43,7 @@ const App = () => (
                 <Navigation />
                 <Routes>
                   <Route path="/auth" element={<Auth />} />
+                  <Route path="/auth/confirm" element={<AuthConfirm />} />
                   <Route path="/" element={
                     <ProtectedRoute>
                       <Index />
