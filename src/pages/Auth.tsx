@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
 import { Loader2 } from 'lucide-react';
+import authSmartPantryImage from '@/assets/auth-smart-pantry.jpg';
 
 const Auth = () => {
   const { user, loading, signIn, signUp } = useAuth();
@@ -58,6 +59,13 @@ const Auth = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10 flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
+        <div className="text-center">
+          <img 
+            src={authSmartPantryImage} 
+            alt="Smart Pantry - Intelligent household pantry management" 
+            className="w-full h-48 object-cover rounded-lg mb-4 shadow-lg"
+          />
+        </div>
         <div className="bg-primary text-primary-foreground rounded-lg p-4 text-center">
           <h2 className="text-lg font-semibold">Welcome to Smart Pantry!</h2>
           <p className="text-sm mt-1 opacity-90">Your intelligent household pantry management solution</p>
