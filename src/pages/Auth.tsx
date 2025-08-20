@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,6 +11,7 @@ import authSmartPantryImage from '@/assets/auth-smart-pantry.jpg';
 
 const Auth = () => {
   const { user, loading, signIn, signUp } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -181,6 +182,26 @@ const Auth = () => {
               </form>
             </TabsContent>
           </Tabs>
+          
+          <div className="px-6 pb-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or
+                </span>
+              </div>
+            </div>
+            <Button 
+              variant="outline" 
+              className="w-full mt-4"
+              onClick={() => navigate('/prototype')}
+            >
+              Here for Prototype
+            </Button>
+          </div>
         </CardContent>
       </Card>
       </div>

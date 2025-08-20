@@ -14,6 +14,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import AuthConfirm from "./pages/AuthConfirm";
+import Prototype from "./pages/Prototype";
 import ManagePersona from "./pages/ManagePersona";
 import Pantry from "./pages/Pantry";
 import ShoppingList from "./pages/ShoppingList";
@@ -44,6 +45,7 @@ const App = () => (
                 <Routes>
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/auth/confirm" element={<AuthConfirm />} />
+                  <Route path="/prototype" element={<Prototype />} />
                   <Route path="/" element={
                     <ProtectedRoute>
                       <Index />
