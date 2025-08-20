@@ -27,7 +27,8 @@ const queryClient = new QueryClient();
 
 const AuthenticatedBottomNav = () => {
   const { user } = useAuth();
-  return user ? <BottomNavigation /> : null;
+  const isPrototype = window.location.pathname === '/prototype';
+  return (user || isPrototype) ? <BottomNavigation /> : null;
 };
 
 const App = () => (
