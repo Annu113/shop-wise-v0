@@ -74,9 +74,10 @@ const Auth = () => {
           </div>
         <CardContent>
           <Tabs defaultValue="signin" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mt-6">
+            <TabsList className="grid w-full grid-cols-3 mt-6">
               <TabsTrigger value="signin">Sign In</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              <TabsTrigger value="prototype">Prototype</TabsTrigger>
             </TabsList>
             
             <TabsContent value="signin">
@@ -181,27 +182,24 @@ const Auth = () => {
                 </Button>
               </form>
             </TabsContent>
+
+            <TabsContent value="prototype">
+              <div className="space-y-4 text-center">
+                <div className="space-y-2">
+                  <h3 className="text-lg font-semibold">Try the Demo</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Experience Smart Pantry without creating an account
+                  </p>
+                </div>
+                <Button 
+                  className="w-full mt-6"
+                  onClick={() => navigate('/prototype')}
+                >
+                  Enter Prototype Mode
+                </Button>
+              </div>
+            </TabsContent>
           </Tabs>
-          
-          <div className="px-6 pb-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                  Or
-                </span>
-              </div>
-            </div>
-            <Button 
-              variant="outline" 
-              className="w-full mt-4"
-              onClick={() => navigate('/prototype')}
-            >
-              Here for Prototype
-            </Button>
-          </div>
         </CardContent>
       </Card>
       </div>
