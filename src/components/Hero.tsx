@@ -27,7 +27,7 @@ export const Hero = () => {
             Welcome to ShopWise, your Smart Pantry
           </p>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
-            Hello Annu 👋
+            Hello Elsa 👋
           </h1>
         </div>
 
