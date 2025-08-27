@@ -1,13 +1,16 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Home, Package, TrendingUp, ShoppingCart, BarChart3 } from "lucide-react";
 
 export const BottomNavigation = () => {
+  const location = useLocation();
+  const isPrototype = location.pathname === '/prototype';
+
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-t z-50">
       <div className="flex items-center justify-around py-2 px-2 max-w-md mx-auto">
         <NavLink
-          to="/"
+          to={isPrototype ? "/prototype" : "/"}
           className={({ isActive }) =>
             cn(
               "flex flex-col items-center gap-1 py-2 px-2 rounded-lg transition-colors min-w-0",
@@ -22,7 +25,7 @@ export const BottomNavigation = () => {
         </NavLink>
         
         <NavLink
-          to="/pantry"
+          to={isPrototype ? "/prototype" : "/pantry"}
           className={({ isActive }) =>
             cn(
               "flex flex-col items-center gap-1 py-2 px-2 rounded-lg transition-colors min-w-0",
@@ -38,7 +41,7 @@ export const BottomNavigation = () => {
         
         
         <NavLink
-          to="/shopping-list"
+          to={isPrototype ? "/prototype" : "/shopping-list"}
           className={({ isActive }) =>
             cn(
               "flex flex-col items-center gap-1 py-2 px-2 rounded-lg transition-colors min-w-0",
@@ -53,7 +56,7 @@ export const BottomNavigation = () => {
         </NavLink>
         
         <NavLink
-          to="/dashboard"
+          to={isPrototype ? "/prototype" : "/dashboard"}
           className={({ isActive }) =>
             cn(
               "flex flex-col items-center gap-1 py-2 px-2 rounded-lg transition-colors min-w-0",
