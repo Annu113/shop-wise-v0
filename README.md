@@ -7,6 +7,125 @@ Note: This is an MVP created through Lovable.
 
 **URL**: https://lovable.dev/projects/e609190c-edbc-44a3-a5cc-1427740895c7
 
+## 2. Business Context
+
+### **2.1 Overview**
+
+Households often struggle with tracking their grocery purchases, leading to frequent food wastage, unplanned purchases, and higher expenses. A significant portion of perishable items expires unused due to the lack of visibility into what has been bought, how much remains, and when it will expire. This problem is compounded in busy, urban households where shopping is fragmented across multiple visits, online orders, and shared household responsibilities.
+
+**ShopWise** addresses this gap by acting as a **conscious pantry assistant**, helping users track grocery purchases and optimize consumption. The app enables users to upload invoices or manually add items, automatically extract item details (using OCR), monitor expiry dates, send timely reminders, and suggest smart shopping lists—encouraging sustainable consumption and reducing waste.
+
+---
+
+### **2.2 Business Problem**
+
+- **High grocery waste**: Lack of visibility into expiry dates leads to unused and expired food.
+- **Inefficient household planning**: Families often forget items they have or buy duplicates.
+- **Manual tracking burden**: Users currently rely on memory or handwritten lists.
+- **Sustainability concerns**: Growing awareness around food wastage impacts consumer behavior.
+
+---
+
+### **2.3 Opportunity**
+
+- Rising demand for **sustainable living apps** and conscious consumerism tools.
+- Growing adoption of **AI-driven personal assistants** for daily tasks.
+- Potential to expand beyond groceries to **fashion, cosmetics, and household products**, creating a unified "smart consumption" ecosystem.
+
+---
+
+### **2.4 Target Users (Personas)**
+
+- **Busy Professionals (25–40 yrs)**: Limited time to manage pantry, rely on reminders.
+- **Eco-conscious Families**: Actively seek ways to reduce food waste and save costs.
+- **Urban Households**: Multiple household members shopping independently.
+
+---
+
+### **2.5 Business Goals**
+
+1. **Reduce grocery waste** for users by providing proactive reminders and expiry tracking.
+2. **Improve household planning efficiency** with smart inventory and shopping lists.
+3. **Promote sustainable consumption**, aligning with eco-conscious trends.
+4. Build a **scalable platform** for future verticals (fashion, makeup, household goods).
+
+## 3. Project Scope
+
+The first version of the app focuses only on the **Grocery** category. It contains the following features:
+
+### 3.1 Project Scope (v0):
+
+1. **Invoice Upload**: Upload photo or PDF of grocery invoice
+2. **OCR & Parsing**: Extract item names, quantities, categories, and dates
+3. **Pantry Dashboard**: List of items with expiry estimates and status (To Consume / Consumed / Expired)
+4. **Reminders**: Push notifications before expiry
+5. **Manual Item Addition & Modification**: Add and update pantry items
+
+### 3.2 Out of Scope (v1, future roadmap):
+
+- **Household member syncing:** Allow multiple users in a household to access and update the same pantry
+- **Food waste analytics** (weekly/monthly usage/waste insights)
+- **Non-grocery support:** Fashion, makeup, personal care, household products
+
+---
+
+## 4. Current Process Overview
+
+Currently, users track their shopping and pantry through:
+
+- Shared family WhatsApp groups
+- Paper lists or mental notes
+- General grocery planning apps (e.g., Out of Milk, Listonic)
+
+However, these methods fall short when:
+
+- Consumption is forgotten or miscommunicated
+- Expiry dates are not tracked
+- Items are re-purchased unnecessarily
+- Pantry clutter leads to food waste
+
+---
+
+## 5. Proposed Process
+
+### What:
+
+A mobile-native app that helps households track what they’ve bought, monitor expiry, and plan what to consume or restock — all in one place.
+
+### Why:
+
+- Minimize grocery waste by tracking expiry
+- Promote conscious, sustainable consumption habits
+- Avoid redundant purchases and optimize household budgets
+- Create a digital pantry memory for the entire family
+
+### How:
+
+- Use OCR to extract product details from invoices
+- Estimate expiry by product type and purchase date
+- Notify users before items expire
+- Provide a dashboard to view, update, and mark items as used
+- Allow manual addition/editing for non-invoice items
+
+---
+
+## 6. Assumptions and Constraints
+
+### Assumptions:
+
+- Users will upload invoices frequently (at least once per week)
+- Invoice text is in English and follows a semi-standard structure
+- Users have basic digital literacy and smartphone access
+- Users are motivated by a desire to reduce waste or organize better
+
+### Constraints:
+
+- OCR accuracy may vary based on invoice quality or image clarity
+- GPT-based parsing may have edge cases or misclassifications
+- Notification delivery depends on OS-level permissions
+- Phase 1 rollout is single-user only; multi-user pantry will require account linking in Phase 2
+- No barcode scanning in MVP; relies o
+
 ## How can I edit this code?
 
 There are several ways of editing your application.
