@@ -14,7 +14,138 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      household_invitations: {
+        Row: {
+          created_at: string
+          expires_at: string
+          household_id: string
+          id: string
+          invited_by: string
+          invited_email: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string
+          household_id: string
+          id?: string
+          invited_by: string
+          invited_email: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          household_id?: string
+          id?: string
+          invited_by?: string
+          invited_email?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "household_invitations_household_id_fkey"
+            columns: ["household_id"]
+            isOneToOne: false
+            referencedRelation: "households"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      household_members: {
+        Row: {
+          created_at: string
+          household_id: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          household_id: string
+          id?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          household_id?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "household_members_household_id_fkey"
+            columns: ["household_id"]
+            isOneToOne: false
+            referencedRelation: "households"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      households: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          owner_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          owner_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          owner_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          current_household_id: string | null
+          display_name: string | null
+          id: string
+          persona_mode: Database["public"]["Enums"]["persona_mode"] | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_household_id?: string | null
+          display_name?: string | null
+          id: string
+          persona_mode?: Database["public"]["Enums"]["persona_mode"] | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_household_id?: string | null
+          display_name?: string | null
+          id?: string
+          persona_mode?: Database["public"]["Enums"]["persona_mode"] | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_profiles_current_household"
+            columns: ["current_household_id"]
+            isOneToOne: false
+            referencedRelation: "households"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +154,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      persona_mode: "individual" | "household"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +281,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      persona_mode: ["individual", "household"],
+    },
   },
 } as const
