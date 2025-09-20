@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePersona } from '@/contexts/PersonaContext';
 import { supabase } from '@/integrations/supabase/client';
+const sb = supabase as any;
 import { Users, CheckCircle, XCircle, Clock, Home, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -46,7 +47,7 @@ const AcceptInvitation = () => {
       }
 
       try {
-        const { data, error } = await supabase
+        const { data, error } = await sb
           .from('household_invitations')
           .select(`
             id,
@@ -64,15 +65,20 @@ const AcceptInvitation = () => {
           return;
         }
 
+        if (!data) {
+          setError('Invitation not found');
+          return;
+        }
+
         // Fetch household data separately
-        const { data: householdData } = await supabase
+        const { data: householdData } = await sb
           .from('households')
           .select('name, owner_id')
           .eq('id', data.household_id)
           .single();
 
         // Fetch inviter data separately
-        const { data: inviterData } = await supabase
+        const { data: inviterData } = await sb
           .from('profiles')
           .select('display_name, email')
           .eq('user_id', data.invited_by)
@@ -80,7 +86,7 @@ const AcceptInvitation = () => {
 
         // Check if invitation is expired
         if (new Date(data.expires_at) < new Date()) {
-          await supabase
+          await sb
             .from('household_invitations')
             .update({ status: 'expired' })
             .eq('id', invitationId);
@@ -131,7 +137,7 @@ const AcceptInvitation = () => {
     
     try {
       // Update invitation status
-      const { error: invitationError } = await supabase
+      const { error: invitationError } = await sb
         .from('household_invitations')
         .update({ status: 'accepted' })
         .eq('id', invitation.id);
@@ -141,7 +147,7 @@ const AcceptInvitation = () => {
       }
 
       // Add user to household members
-      const { error: memberError } = await supabase
+      const { error: memberError } = await sb
         .from('household_members')
         .insert({
           household_id: invitation.household_id,
@@ -154,7 +160,7 @@ const AcceptInvitation = () => {
       }
 
       // Update user's profile to household mode
-      const { error: profileError } = await supabase
+      const { error: profileError } = await sb
         .from('profiles')
         .update({
           persona_mode: 'household',
@@ -183,7 +189,7 @@ const AcceptInvitation = () => {
     setProcessing(true);
     
     try {
-      const { error } = await supabase
+      const { error } = await sb
         .from('household_invitations')
         .update({ status: 'declined' })
         .eq('id', invitation.id);

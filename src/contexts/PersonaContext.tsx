@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+const sb = supabase as any;
 import { useAuth } from './AuthContext';
 import { toast } from 'sonner';
 
@@ -58,7 +59,7 @@ export const PersonaProvider = ({ children }: { children: React.ReactNode }) => 
     }
 
     try {
-      const { data: profileData, error: profileError } = await supabase
+      const { data: profileData, error: profileError } = await sb
         .from('profiles')
         .select('*')
         .eq('user_id', user.id)
@@ -74,7 +75,7 @@ export const PersonaProvider = ({ children }: { children: React.ReactNode }) => 
 
       // Fetch current household if user is in household mode
       if (profileData?.persona_mode === 'household' && profileData.current_household_id) {
-        const { data: householdData, error: householdError } = await supabase
+        const { data: householdData, error: householdError } = await sb
           .from('households')
           .select('*')
           .eq('id', profileData.current_household_id)
@@ -108,7 +109,7 @@ export const PersonaProvider = ({ children }: { children: React.ReactNode }) => 
         current_household_id: mode === 'household' ? householdId || null : null,
       };
 
-      const { error } = await supabase
+      const { error } = await sb
         .from('profiles')
         .update(updateData)
         .eq('user_id', user.id);
@@ -132,7 +133,7 @@ export const PersonaProvider = ({ children }: { children: React.ReactNode }) => 
     try {
       console.log('Creating household with:', { name, owner_id: user.id });
       
-      const { data: household, error: householdError } = await supabase
+      const { data: household, error: householdError } = await sb
         .from('households')
         .insert({
           name,
@@ -150,7 +151,7 @@ export const PersonaProvider = ({ children }: { children: React.ReactNode }) => 
       }
 
       // Add user as a member of their own household
-      const { error: memberError } = await supabase
+      const { error: memberError } = await sb
         .from('household_members')
         .insert({
           household_id: household.id,
@@ -223,7 +224,7 @@ export const PersonaProvider = ({ children }: { children: React.ReactNode }) => 
     if (!user || !currentHousehold) return [];
 
     try {
-      const { data, error } = await supabase
+      const { data, error } = await sb
         .from('household_invitations')
         .select('*')
         .eq('household_id', currentHousehold.id)
@@ -245,7 +246,7 @@ export const PersonaProvider = ({ children }: { children: React.ReactNode }) => 
     if (!user) return { success: false, error: 'User not authenticated' };
 
     try {
-      const { error } = await supabase
+      const { error } = await sb
         .from('household_invitations')
         .delete()
         .eq('id', invitationId)
