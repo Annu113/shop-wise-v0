@@ -1,6 +1,9 @@
-# Welcome to your Lovable project
+# Welcome to Shop-Wise
 
 ## Project info
+ShopWise is a mobile-native app that enables users to upload their shopping invoices or manually add items, track expiry and consumption, receive intelligent reminders, and create smart shopping lists. The app will initially focus on groceries but is designed to scale to non-grocery domains like fashion, makeup, and household products—offering users a holistic, sustainable shopping assistant.
+
+Note: This is an MVP created through Lovable. 
 
 **URL**: https://lovable.dev/projects/e609190c-edbc-44a3-a5cc-1427740895c7
 
